@@ -40,47 +40,4 @@ merge : `working branch` -> `develop branch`
 PRが承認されてマージが完了した際には適宜issueをcloseする。
 
 ## 前提条件
-以下が利用できる環境での開発を想定します。
-- WSL2
-- Docker / Docker Compose
-
-## 動作確認
-### backend
-1. .envファイルの作成
-`.env.example`をコピーして.envを作成する
-```
-cd backend
-cp .env.example .env
-```
-2. コンテナ立ち上げ
-```
-docker compose up -d
-```
-
-### frontend
-[開発環境構築]
-以下開発開始時のnode関連のバージョン情報
-```
-npx --version
->11.6.0
-
-node --version
->v22.16.0
-
-npm --version
->11.6.0
-```
-
-プロジェクトテンプレートは`npx create-expo-app`で作成
-```
-npx create-expo-app@latest --template blank-typescript
-```
-
-1. frontendディレクトリへ移動
-```
-cd frontend
-```
-2. npxコマンドで起動
-```
-npx expo start
-```
+/backend, /frontendのREADMEを参照
