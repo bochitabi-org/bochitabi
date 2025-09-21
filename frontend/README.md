@@ -54,3 +54,19 @@ pnpm android
 ```bash
 pnpm web
 ```
+
+## ビルド
+eas cliのinstallが必要
+
+### android
+
+#### ローカルビルド
+- jdk 17系が必要(検証時は17.0.14-librca)
+```bash
+eas build -p android --profile preview --local
+```
+
+#### クラウド環境ビルド
+```bash
+eas build -p android --profile preview
+```
