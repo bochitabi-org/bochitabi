@@ -15,17 +15,20 @@ const styles = StyleSheet.create({
 	},
 });
 
+// 櫻川市
+const defaultRegion = {
+	latitude: 36.33018692714167,
+	longitude: 140.09567236901313,
+	latitudeDelta: 0.05,
+	longitudeDelta: 0.05
+}
+
 export default () => (
 	<View style={styles.container}>
 		<MapView
 			provider={PROVIDER_GOOGLE}
 			style={styles.map}
-			region={{
-				latitude: 37.78825,
-				longitude: -122.4324,
-				latitudeDelta: 0.015,
-				longitudeDelta: 0.0121,
-			}}
+			region={defaultRegion}
 		></MapView>
 	</View>
 );
