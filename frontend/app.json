@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ぼち旅（仮",
+    "name": "ぼち旅（仮）",
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,9 +17,6 @@
       "bundleIdentifier": "com.masashi99.frontend",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      },
-      "config": {
-        "googleMapsApiKey": "AIzaSyA4A3uyJVvC_McdfMnOwLwczr9sN4ky3PY"
       }
     },
     "android": {
@@ -29,12 +26,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.masashi99.frontend",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyA4A3uyJVvC_McdfMnOwLwczr9sN4ky3PY"
-        }
-      }  
+      "package": "com.masashi99.frontend"
     },
     "web": {
       "favicon": "./assets/favicon.png"
