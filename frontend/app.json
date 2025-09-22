@@ -17,6 +17,9 @@
       "bundleIdentifier": "com.masashi99.frontend",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyA4A3uyJVvC_McdfMnOwLwczr9sN4ky3PY"
       }
     },
     "android": {
@@ -26,7 +29,12 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.masashi99.frontend"
+      "package": "com.masashi99.frontend",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyA4A3uyJVvC_McdfMnOwLwczr9sN4ky3PY"
+        }
+      }  
     },
     "web": {
       "favicon": "./assets/favicon.png"
