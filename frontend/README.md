@@ -56,17 +56,20 @@ pnpm web
 ```
 
 ## ビルド
-eas cliのinstallが必要
+- eas cliのinstallが必要
 
 ### android
 
 #### ローカルビルド
 - jdk 17系が必要(検証時は17.0.14-librca)
+- .envにAPI_KEYを設定する
+  - ローカルビルドの場合.envを直接参照できないためシェルに展開して対応する
 ```bash
-eas build -p android --profile preview --local
+export $(cat .env | xargs) && eas build -p android --profile preview --local
 ```
 
 #### クラウド環境ビルド
+- expo projectにAPI_KEYをsecretとして登録しておく
 ```bash
 eas build -p android --profile preview
 ```
