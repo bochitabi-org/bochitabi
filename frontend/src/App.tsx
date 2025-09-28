@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, View } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 const { width, height } = Dimensions.get("window");
 
@@ -20,8 +20,20 @@ const defaultRegion = {
 	latitude: 36.33018692714167,
 	longitude: 140.09567236901313,
 	latitudeDelta: 0.05,
-	longitudeDelta: 0.05
-}
+	longitudeDelta: 0.05,
+};
+
+const defaultMarkers = [
+	{
+		id: "1",
+		coordinate: {
+			latitude: 36.33018692714167,
+			longitude: 140.09567236901313,
+		},
+		title: "最初の思い出",
+		description: "あの日あの時の思い出",
+	},
+];
 
 export default () => (
 	<View style={styles.container}>
@@ -29,6 +41,15 @@ export default () => (
 			provider={PROVIDER_GOOGLE}
 			style={styles.map}
 			region={defaultRegion}
-		></MapView>
+		>
+			{defaultMarkers.map((marker) => (
+				<Marker
+					key={marker.id}
+					coordinate={marker.coordinate}
+					title={marker.title}
+					description={marker.description}
+				/>
+			))}
+		</MapView>
 	</View>
 );
