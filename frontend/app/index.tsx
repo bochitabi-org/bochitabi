@@ -35,21 +35,23 @@ const defaultMarkers = [
 	},
 ];
 
-export default () => (
-	<View style={styles.container}>
-		<MapView
-			provider={PROVIDER_GOOGLE}
-			style={styles.map}
-			region={defaultRegion}
-		>
-			{defaultMarkers.map((marker) => (
-				<Marker
-					key={marker.id}
-					coordinate={marker.coordinate}
-					title={marker.title}
-					description={marker.description}
-				/>
-			))}
-		</MapView>
-	</View>
-);
+export default function Home() {
+	return (
+		<View style={styles.container}>
+			<MapView
+				provider={PROVIDER_GOOGLE}
+				style={styles.map}
+				region={defaultRegion}
+			>
+				{defaultMarkers.map((marker) => (
+					<Marker
+						key={marker.id}
+						coordinate={marker.coordinate}
+						title={marker.title}
+						description={marker.description}
+					/>
+				))}
+			</MapView>
+		</View>
+	);
+}
