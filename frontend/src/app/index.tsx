@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { Sheet } from "tamagui";
+import { Memory } from "../features/memories/components/Memory/Memory";
 
 const { width, height } = Dimensions.get("window");
 
@@ -63,12 +64,13 @@ export default function Home() {
 				modal={false}
 				snapPoints={[90]}
 				dismissOnSnapToBottom
+				onOpenChange={setSelectedMarker}
 			>
 				<Sheet.Overlay opacity={0} />
 				<Sheet.Handle />
 				<Sheet.Frame padding="$4">
 					<View>
-						<Text>hoge</Text>
+						<Memory />
 					</View>
 				</Sheet.Frame>
 			</Sheet>
