@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { Sheet } from "tamagui";
+import { Memory } from "../features/memories/components/Memory/Memory";
 
 const { width, height } = Dimensions.get("window");
 
@@ -36,6 +39,8 @@ const defaultMarkers = [
 ];
 
 export default function Home() {
+	const [selectedMarker, setSelectedMarker] = useState(false);
+
 	return (
 		<View style={styles.container}>
 			<MapView
@@ -49,9 +54,26 @@ export default function Home() {
 						coordinate={marker.coordinate}
 						title={marker.title}
 						description={marker.description}
+						onPress={() => setSelectedMarker((prev) => !prev)}
 					/>
 				))}
 			</MapView>
+			<Sheet
+				animation="fast"
+				open={selectedMarker}
+				modal={false}
+				snapPoints={[90]}
+				dismissOnSnapToBottom
+				onOpenChange={setSelectedMarker}
+			>
+				<Sheet.Overlay opacity={0} />
+				<Sheet.Handle />
+				<Sheet.Frame padding="$4">
+					<View>
+						<Memory />
+					</View>
+				</Sheet.Frame>
+			</Sheet>
 		</View>
 	);
 }
