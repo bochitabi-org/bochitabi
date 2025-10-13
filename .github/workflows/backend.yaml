@@ -1,0 +1,12 @@
+name: Backend Pipeline
+on: workflow_dispatch
+jobs:
+  backend-build:
+    name: backend build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Source checkout
+        uses: actions/checkout@v5
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3k 
+      - run: cd backend && docker build .
