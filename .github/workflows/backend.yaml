@@ -1,5 +1,13 @@
 name: Backend Pipeline
 on: workflow_dispatch
+env:
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+  SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+  REGION: ${{ secrets.GCP_REGION }}
+  REGISTRY: ${{ secrets.REGISTRY }}
+  REPOSITORY: ${{ secrets.REPOSITORY }}
+  APP_NAME: ${{ secrets.APP_NAME }}
 jobs:
   backend-build:
     name: backend build
@@ -7,6 +15,27 @@ jobs:
     steps:
       - name: Source checkout
         uses: actions/checkout@v5
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3 
-      - run: cd backend && docker build .
+
+      - name: Authentication
+        uses: google-github-actions/auth@v3  
+        with:
+          workload_identity_provider: $WORKLOAD_IDENTITY_PROVIDER
+          service_account: $SERVICE_ACCOUNT
+      
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+
+      - name: Build Docker image
+        run: -|
+          cd Backend
+          docker build -t $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA . 
+          docker tag $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:latest
+      
+      - name: Push Docker image
+        run: -|
+          docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA
+          docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:latest
+      
