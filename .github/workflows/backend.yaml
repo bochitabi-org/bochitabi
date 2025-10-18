@@ -2,10 +2,10 @@ name: Backend Pipeline
 on: workflow_dispatch
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
   SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
   REGISTRY: ${{ secrets.GCP_REGISTRY }}
   REPOSITORY: ${{ secrets.GCP_REPOSITORY }}
+  WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   APP_NAME: bochitabi
 jobs:
   backend-build:
@@ -23,7 +23,7 @@ jobs:
         uses: google-github-actions/auth@v3  
         with:
           project_id: $PROJECT_ID
-          workload_identity_provider: projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions
+          workload_identity_provider: $WORKLOAD_IDENTITY_PROVIDER
           service_account: $SERVICE_ACCOUNT
       
       - name: Set up Google Cloud SDK
