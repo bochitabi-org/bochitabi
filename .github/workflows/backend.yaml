@@ -7,7 +7,7 @@ env:
   REGION: ${{ secrets.GCP_REGION }}
   REGISTRY: ${{ secrets.REGISTRY }}
   REPOSITORY: ${{ secrets.REPOSITORY }}
-  APP_NAME: ${{ secrets.APP_NAME }}
+  APP_NAME: bochitabi
 jobs:
   backend-build:
     name: backend build
