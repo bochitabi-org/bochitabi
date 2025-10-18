@@ -1,12 +1,12 @@
 name: Backend Pipeline
 on: workflow_dispatch
 env:
-  PROJECT_ID: ${{ secrets.PROJECT_ID }}
-  WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-  SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+  SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
   REGION: ${{ secrets.GCP_REGION }}
-  REGISTRY: ${{ secrets.REGISTRY }}
-  REPOSITORY: ${{ secrets.REPOSITORY }}
+  REGISTRY: ${{ secrets.GCP_REGISTRY }}
+  REPOSITORY: ${{ secrets.GCP_REPOSITORY }}
   APP_NAME: bochitabi
 jobs:
   backend-build:
