@@ -6,7 +6,7 @@ env:
   REGISTRY: ${{ secrets.GCP_REGISTRY }}
   REPOSITORY: ${{ secrets.GCP_REPOSITORY }}
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-  APP_NAME: bochitabi
+  APP_NAME: bochitabi-back
 jobs:
   backend-build:
     name: backend build
