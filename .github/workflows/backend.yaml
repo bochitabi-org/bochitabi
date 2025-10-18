@@ -2,10 +2,10 @@ name: Backend Pipeline
 on: workflow_dispatch
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
   SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
   REGISTRY: ${{ secrets.GCP_REGISTRY }}
   REPOSITORY: ${{ secrets.GCP_REPOSITORY }}
+  WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   APP_NAME: bochitabi
 jobs:
   backend-build:
@@ -22,9 +22,9 @@ jobs:
       - name: Authentication
         uses: google-github-actions/auth@v3  
         with:
-          project_id: $PROJECT_ID
-          workload_identity_provider: projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions
-          service_account: $SERVICE_ACCOUNT
+          project_id: ${{ env.PROJECT_ID }}
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.SERVICE_ACCOUNT }}
       
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v3
@@ -33,12 +33,12 @@ jobs:
         run: gcloud auth configure-docker $REGISTRY
 
       - name: Build Docker image
-        run: -|
-          cd Backend
-          docker build -t $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA . 
-          docker tag $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:latest
+        run: |
+          cd backend
+          docker build -t $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME:$GITHUB_SHA . 
+          docker tag $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME:$GITHUB_SHA $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME:latest
       
       - name: Push Docker image
-        run: -|
-          docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA
-          docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:latest
+        run: |
+          docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME:$GITHUB_SHA
+          docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME:latest
