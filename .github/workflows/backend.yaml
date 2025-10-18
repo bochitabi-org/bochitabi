@@ -34,7 +34,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          cd Backend
+          cd backend
           docker build -t $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA . 
           docker tag $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:latest
       
