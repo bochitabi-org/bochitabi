@@ -2,9 +2,8 @@ name: Backend Pipeline
 on: workflow_dispatch
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+  PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
   SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-  REGION: ${{ secrets.GCP_REGION }}
   REGISTRY: ${{ secrets.GCP_REGISTRY }}
   REPOSITORY: ${{ secrets.GCP_REPOSITORY }}
   APP_NAME: bochitabi
@@ -19,14 +18,15 @@ jobs:
       - name: Authentication
         uses: google-github-actions/auth@v3  
         with:
-          workload_identity_provider: $WORKLOAD_IDENTITY_PROVIDER
+          project_id: $PROJECT_ID
+          workload_identity_provider: projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions
           service_account: $SERVICE_ACCOUNT
       
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v3
 
       - name: Configure Docker for Artifact Registry
-        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+        run: gcloud auth configure-docker $REGISTRY
 
       - name: Build Docker image
         run: -|
@@ -38,4 +38,3 @@ jobs:
         run: -|
           docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA
           docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:latest
-      
