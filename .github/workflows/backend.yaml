@@ -6,7 +6,7 @@ env:
   REGISTRY: ${{ secrets.GCP_REGISTRY }}
   REPOSITORY: ${{ secrets.GCP_REPOSITORY }}
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-  APP_NAME: bochitabi
+  APP_NAME: bochitabi-back
 jobs:
   backend-build:
     name: backend build
@@ -42,3 +42,13 @@ jobs:
         run: |
           docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME:$GITHUB_SHA
           docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME:latest
+
+      - name: Deploy to Cloud run
+        run: |
+          gcloud run deploy $APP_NAME \
+            --image $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME:latest \
+            --region asia-northeast1 \
+            --platform managed \
+            --allow-unauthenticated \
+            --min-instances 0 \
+            --max-instances 1
