@@ -33,12 +33,12 @@ jobs:
         run: gcloud auth configure-docker $REGISTRY
 
       - name: Build Docker image
-        run: -|
+        run: |
           cd Backend
           docker build -t $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA . 
           docker tag $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:latest
       
       - name: Push Docker image
-        run: -|
+        run: |
           docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:$GITHUB_SHA
           docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$APP_NAME/:latest
