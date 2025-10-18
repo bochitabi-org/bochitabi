@@ -11,6 +11,10 @@ jobs:
   backend-build:
     name: backend build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
       - name: Source checkout
         uses: actions/checkout@v5
