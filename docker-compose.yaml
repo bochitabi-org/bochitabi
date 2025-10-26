@@ -8,6 +8,14 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     ports:
-      - "5432:5432"
+      - 5432:5432
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ./backend/Dockerfile
+    ports:
+      - 8080:8080
+    
 volumes:
   db:
