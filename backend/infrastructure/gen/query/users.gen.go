@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"gin-quickstart/infrastructure/gen/model"
+	"github.com/bochitabi-org/bochitabi/backend/infrastructure/gen/model"
 )
 
 func newUser(db *gorm.DB, opts ...gen.DOOption) user {

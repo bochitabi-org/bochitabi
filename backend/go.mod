@@ -1,4 +1,4 @@
-module gin-quickstart
+module github.com/bochitabi-org/bochitabi/backend
 
 go 1.25.1
 

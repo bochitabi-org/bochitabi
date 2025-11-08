@@ -3,9 +3,10 @@ package relation
 import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gen"
+	"gorm.io/gen/field"
 	"gorm.io/gorm"
 
-	".../infrastructure/gen/model"
+	"github.com/bochitabi-org/bochitabi/backend/infrastructure/gen/model"
 )
 
 func main() {
@@ -21,7 +22,26 @@ func main() {
 
 	allModels := []interface{}{
 		g.GenerateModel(
-			model.
-		)
+			model.TableNameUser,
+			gen.FieldRelateModel(field.HasMany, "Records", model.Record{}, nil),
+		),
+		g.GenerateModel(
+			model.TableNameRecord,
+			gen.FieldRelateModel(field.BelongsTo, "User", model.User{}, nil),
+			gen.FieldRelateModel(field.HasMany, "Memories", model.Memory{}, nil),
+		),
+		g.GenerateModel(
+			model.TableNameMemory,
+			gen.FieldRelateModel(field.BelongsTo, "Record", model.Record{}, nil),
+			gen.FieldRelateModel(field.HasMany, "Pictures", model.Picture{}, nil),
+		),
+		g.GenerateModel(
+			model.TableNamePicture,
+			gen.FieldRelateModel(field.BelongsTo, "Memory", model.Memory{}, nil),
+		),
 	}
+
+	g.ApplyBasic(allModels...)
+
+	g.Execute()
 }
