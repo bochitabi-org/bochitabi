@@ -14,7 +14,7 @@ class CommonStep {
 
     @Step("URL<url>にGETリクエストを送る")
     fun URLにGETリクエストを送る(url: String){
-        val urlObj = URI.create(url).toURL()
+        val urlObj = URI.create("http://localhost:8080${url}").toURL()
         val connection = urlObj.openConnection() as HttpURLConnection
 
         connection.connectTimeout = 20_000 // 20 sec
