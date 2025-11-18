@@ -1,10 +1,10 @@
 import com.thoughtworks.gauge.BeforeSpec
+import com.thoughtworks.gauge.ExecutionContext
 import org.dbunit.JdbcDatabaseTester
 import org.dbunit.database.DatabaseConfig
 import org.dbunit.dataset.csv.CsvURLDataSet
 import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory
 import org.dbunit.operation.DatabaseOperation
-import java.io.File
 
 class ExecutionHooks {
     private val connection = JdbcDatabaseTester(
@@ -16,10 +16,15 @@ class ExecutionHooks {
     ).connection.apply { this.config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, PostgresqlDataTypeFactory()) }
 
     @BeforeSpec
-    fun setupDb() {
-        val datasetDir = File("fixtures/v1/memories/get/db/")
-        val csvDataset = CsvURLDataSet(datasetDir.toURI().toURL())
+    fun setupDb(context: ExecutionContext) {
+        val fixturesDir = context.currentSpecification.fileName
+            .removePrefix(System.getProperty("user.dir") + "/specs")
+            .removeSuffix(".spec")
 
-        DatabaseOperation.CLEAN_INSERT.execute(connection, csvDataset)
+        val datasetDir = "fixtures$fixturesDir/db"
+
+        Thread.currentThread().contextClassLoader.getResource(datasetDir)
+            ?.let { CsvURLDataSet(it) }
+            ?.let { DatabaseOperation.CLEAN_INSERT.execute(connection, it) }
     }
 }
