@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d6097d96-314f-4df0-b39a-ecfaed34818d" name="変更" comment="refactor: test run dynamic" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+        <option value="Kotlin Object" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="35SLsKGflwZn6tZ3id2h8WNp6Y1" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gauge の実行.Print hello (1).executor": "Run",
+    "Gauge の実行.Print hello (2).executor": "Run",
+    "Gauge の実行.Print hello (3).executor": "Run",
+    "Gauge の実行.Print hello (4).executor": "Run",
+    "Gauge の実行.Print hello (5).executor": "Run",
+    "Gauge の実行.Print hello.executor": "Run",
+    "Gauge の実行.example.spec.executor": "Run",
+    "Gauge の実行.get.spec.executor": "Run",
+    "Gauge の実行.ping.spec (1).executor": "Run",
+    "Gauge の実行.ping.spec.executor": "Run",
+    "Gauge の実行.test (1).executor": "Run",
+    "Gauge の実行.test.executor": "Run",
+    "Gauge の実行.全ての思い出を取得する (1).executor": "Run",
+    "Gauge の実行.全ての思い出を取得する.executor": "Run",
+    "Maven.gauge_kotlin_maven [clean].executor": "Run",
+    "Maven.gauge_kotlin_maven [compile].executor": "Run",
+    "Maven.gauge_kotlin_maven [install].executor": "Run",
+    "Maven.gauge_kotlin_maven [package].executor": "Run",
+    "Maven.gauge_kotlin_maven [test].executor": "Run",
+    "Maven.gauge_kotlin_maven [validate].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "test/backend-db",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "/Users/asano/project/github.com/bochitabi-org/bochitabi/tests/system/backend/tmp/src/Main.java",
+    "project.structure.last.edited": "SDK",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "リモート JVM デバッグ..executor": "Debug"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tmp" />
+      <recent name="$PROJECT_DIR$/specs" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gauge の実行.全ての思い出を取得する">
+    <configuration name="全ての思い出を取得する (1)" type="executeSpecs" factoryName="GaugeConfigurationFactory" temporary="true">
+      <setting name="environment" value="" />
+      <setting name="specsToExecute" value="$PROJECT_DIR$/specs/v1/memories/get.spec:4" />
+      <setting name="tags" value="" />
+      <setting name="parallelNodes" value="" />
+      <setting name="execInParallel" value="false" />
+      <setting name="programParameters" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="moduleName" value="gauge_kotlin_maven" />
+      <envMap />
+      <setting name="rowsRange" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="全ての思い出を取得する" type="executeSpecs" factoryName="GaugeConfigurationFactory" temporary="true">
+      <setting name="environment" value="" />
+      <setting name="specsToExecute" value="$PROJECT_DIR$/specs/v1/memories/get.spec:4" />
+      <setting name="tags" value="" />
+      <setting name="parallelNodes" value="" />
+      <setting name="execInParallel" value="false" />
+      <setting name="programParameters" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="moduleName" value="gauge_kotlin_maven" />
+      <envMap />
+      <setting name="rowsRange" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="get.spec" type="executeSpecs" factoryName="GaugeConfigurationFactory" temporary="true">
+      <setting name="environment" value="" />
+      <setting name="specsToExecute" value="$PROJECT_DIR$/specs/v1/memories/get.spec" />
+      <setting name="tags" value="" />
+      <setting name="parallelNodes" value="" />
+      <setting name="execInParallel" value="false" />
+      <setting name="programParameters" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="moduleName" value="gauge_kotlin_maven" />
+      <envMap />
+      <setting name="rowsRange" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ping.spec" type="executeSpecs" factoryName="GaugeConfigurationFactory" temporary="true">
+      <setting name="environment" value="" />
+      <setting name="specsToExecute" value="$PROJECT_DIR$/specs/ping.spec" />
+      <setting name="tags" value="" />
+      <setting name="parallelNodes" value="" />
+      <setting name="execInParallel" value="false" />
+      <setting name="programParameters" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="moduleName" value="gauge_kotlin_maven" />
+      <envMap />
+      <setting name="rowsRange" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="test" type="executeSpecs" factoryName="GaugeConfigurationFactory" temporary="true">
+      <setting name="environment" value="" />
+      <setting name="specsToExecute" value="$PROJECT_DIR$/specs/ping.spec:3" />
+      <setting name="tags" value="" />
+      <setting name="parallelNodes" value="" />
+      <setting name="execInParallel" value="false" />
+      <setting name="programParameters" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="moduleName" value="gauge_kotlin_maven" />
+      <envMap />
+      <setting name="rowsRange" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gauge の実行.全ての思い出を取得する" />
+        <item itemvalue="Gauge の実行.ping.spec" />
+        <item itemvalue="Gauge の実行.get.spec" />
+        <item itemvalue="Gauge の実行.全ての思い出を取得する (1)" />
+        <item itemvalue="Gauge の実行.全ての思い出を取得する" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="デフォルトタスク">
+      <changelist id="d6097d96-314f-4df0-b39a-ecfaed34818d" name="変更" comment="" />
+      <created>1763098731520</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1763098731520</updated>
+    </task>
+    <task id="LOCAL-00001" summary="playwright -&gt; gauge">
+      <option name="closed" value="true" />
+      <created>1763218952846</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1763218952846</updated>
+    </task>
+    <task id="LOCAL-00002" summary="move: ping.spec">
+      <option name="closed" value="true" />
+      <created>1763277288295</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763277288295</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add: tests">
+      <option name="closed" value="true" />
+      <created>1763469968546</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1763469968546</updated>
+    </task>
+    <task id="LOCAL-00004" summary="refactor: test run dynamic">
+      <option name="closed" value="true" />
+      <created>1763473553637</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1763473553637</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="playwright -&gt; gauge" />
+    <MESSAGE value="move: ping.spec" />
+    <MESSAGE value="add: tests" />
+    <MESSAGE value="refactor: test run dynamic" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: test run dynamic" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
