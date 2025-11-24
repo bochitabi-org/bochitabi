@@ -1,5 +1,4 @@
 # 思い出の取得
-tags: wip
 
 ## 全ての思い出を取得する
 * URL"/v1/memories"にGETリクエストを送る
