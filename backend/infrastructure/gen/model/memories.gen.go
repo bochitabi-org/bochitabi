@@ -8,12 +8,14 @@ const TableNameMemory = "memories"
 
 // Memory mapped from table <memories>
 type Memory struct {
-	ID        string `gorm:"column:id;not null;default:uuidv7()" json:"id"`
-	RecordID  string `gorm:"column:record_id;not null" json:"record_id"`
-	Name      string `gorm:"column:name;not null" json:"name"`
-	Story     string `gorm:"column:story" json:"story"`
-	Latitude  string `gorm:"column:latitude" json:"latitude"`
-	Longitude string `gorm:"column:longitude" json:"longitude"`
+	ID        string    `gorm:"column:id;not null;default:uuidv7()" json:"id"`
+	RecordID  string    `gorm:"column:record_id;not null" json:"record_id"`
+	Name      string    `gorm:"column:name;not null" json:"name"`
+	Story     string    `gorm:"column:story" json:"story"`
+	Latitude  string    `gorm:"column:latitude" json:"latitude"`
+	Longitude string    `gorm:"column:longitude" json:"longitude"`
+	Record    Record    `json:"record"`
+	Pictures  []Picture `json:"pictures"`
 }
 
 // TableName Memory's table name

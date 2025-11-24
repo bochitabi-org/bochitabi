@@ -32,6 +32,17 @@ func newRecord(db *gorm.DB, opts ...gen.DOOption) record {
 	_record.UserID = field.NewString(tableName, "user_id")
 	_record.TripName = field.NewString(tableName, "trip_name")
 	_record.RecordDate = field.NewTime(tableName, "record_date")
+	_record.User = recordBelongsToUser{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("User", "model.User"),
+	}
+
+	_record.Memories = recordHasManyMemories{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Memories", "model.Memory"),
+	}
 
 	_record.fillFieldMap()
 
@@ -46,6 +57,9 @@ type record struct {
 	UserID     field.String
 	TripName   field.String
 	RecordDate field.Time
+	User       recordBelongsToUser
+
+	Memories recordHasManyMemories
 
 	fieldMap map[string]field.Expr
 }
@@ -82,21 +96,190 @@ func (r *record) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (r *record) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 4)
+	r.fieldMap = make(map[string]field.Expr, 6)
 	r.fieldMap["id"] = r.ID
 	r.fieldMap["user_id"] = r.UserID
 	r.fieldMap["trip_name"] = r.TripName
 	r.fieldMap["record_date"] = r.RecordDate
+
 }
 
 func (r record) clone(db *gorm.DB) record {
 	r.recordDo.ReplaceConnPool(db.Statement.ConnPool)
+	r.User.db = db.Session(&gorm.Session{Initialized: true})
+	r.User.db.Statement.ConnPool = db.Statement.ConnPool
+	r.Memories.db = db.Session(&gorm.Session{Initialized: true})
+	r.Memories.db.Statement.ConnPool = db.Statement.ConnPool
 	return r
 }
 
 func (r record) replaceDB(db *gorm.DB) record {
 	r.recordDo.ReplaceDB(db)
+	r.User.db = db.Session(&gorm.Session{})
+	r.Memories.db = db.Session(&gorm.Session{})
 	return r
+}
+
+type recordBelongsToUser struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a recordBelongsToUser) Where(conds ...field.Expr) *recordBelongsToUser {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a recordBelongsToUser) WithContext(ctx context.Context) *recordBelongsToUser {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a recordBelongsToUser) Session(session *gorm.Session) *recordBelongsToUser {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a recordBelongsToUser) Model(m *model.Record) *recordBelongsToUserTx {
+	return &recordBelongsToUserTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a recordBelongsToUser) Unscoped() *recordBelongsToUser {
+	a.db = a.db.Unscoped()
+	return &a
+}
+
+type recordBelongsToUserTx struct{ tx *gorm.Association }
+
+func (a recordBelongsToUserTx) Find() (result *model.User, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a recordBelongsToUserTx) Append(values ...*model.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a recordBelongsToUserTx) Replace(values ...*model.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a recordBelongsToUserTx) Delete(values ...*model.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a recordBelongsToUserTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a recordBelongsToUserTx) Count() int64 {
+	return a.tx.Count()
+}
+
+func (a recordBelongsToUserTx) Unscoped() *recordBelongsToUserTx {
+	a.tx = a.tx.Unscoped()
+	return &a
+}
+
+type recordHasManyMemories struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a recordHasManyMemories) Where(conds ...field.Expr) *recordHasManyMemories {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a recordHasManyMemories) WithContext(ctx context.Context) *recordHasManyMemories {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a recordHasManyMemories) Session(session *gorm.Session) *recordHasManyMemories {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a recordHasManyMemories) Model(m *model.Record) *recordHasManyMemoriesTx {
+	return &recordHasManyMemoriesTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a recordHasManyMemories) Unscoped() *recordHasManyMemories {
+	a.db = a.db.Unscoped()
+	return &a
+}
+
+type recordHasManyMemoriesTx struct{ tx *gorm.Association }
+
+func (a recordHasManyMemoriesTx) Find() (result []*model.Memory, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a recordHasManyMemoriesTx) Append(values ...*model.Memory) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a recordHasManyMemoriesTx) Replace(values ...*model.Memory) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a recordHasManyMemoriesTx) Delete(values ...*model.Memory) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a recordHasManyMemoriesTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a recordHasManyMemoriesTx) Count() int64 {
+	return a.tx.Count()
+}
+
+func (a recordHasManyMemoriesTx) Unscoped() *recordHasManyMemoriesTx {
+	a.tx = a.tx.Unscoped()
+	return &a
 }
 
 type recordDo struct{ gen.DO }

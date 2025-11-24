@@ -1,4 +1,4 @@
-package relation
+package main
 
 import (
 	"gorm.io/driver/postgres"

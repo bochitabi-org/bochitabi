@@ -11,6 +11,7 @@ type Picture struct {
 	ID       string `gorm:"column:id;not null;default:uuidv7()" json:"id"`
 	MemoryID string `gorm:"column:memory_id" json:"memory_id"`
 	URL      string `gorm:"column:url" json:"url"`
+	Memory   Memory `json:"memory"`
 }
 
 // TableName Picture's table name

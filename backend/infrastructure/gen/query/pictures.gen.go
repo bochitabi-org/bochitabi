@@ -31,6 +31,11 @@ func newPicture(db *gorm.DB, opts ...gen.DOOption) picture {
 	_picture.ID = field.NewString(tableName, "id")
 	_picture.MemoryID = field.NewString(tableName, "memory_id")
 	_picture.URL = field.NewString(tableName, "url")
+	_picture.Memory = pictureBelongsToMemory{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Memory", "model.Memory"),
+	}
 
 	_picture.fillFieldMap()
 
@@ -44,6 +49,7 @@ type picture struct {
 	ID       field.String
 	MemoryID field.String
 	URL      field.String
+	Memory   pictureBelongsToMemory
 
 	fieldMap map[string]field.Expr
 }
@@ -79,20 +85,105 @@ func (p *picture) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *picture) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 3)
+	p.fieldMap = make(map[string]field.Expr, 4)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["memory_id"] = p.MemoryID
 	p.fieldMap["url"] = p.URL
+
 }
 
 func (p picture) clone(db *gorm.DB) picture {
 	p.pictureDo.ReplaceConnPool(db.Statement.ConnPool)
+	p.Memory.db = db.Session(&gorm.Session{Initialized: true})
+	p.Memory.db.Statement.ConnPool = db.Statement.ConnPool
 	return p
 }
 
 func (p picture) replaceDB(db *gorm.DB) picture {
 	p.pictureDo.ReplaceDB(db)
+	p.Memory.db = db.Session(&gorm.Session{})
 	return p
+}
+
+type pictureBelongsToMemory struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a pictureBelongsToMemory) Where(conds ...field.Expr) *pictureBelongsToMemory {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a pictureBelongsToMemory) WithContext(ctx context.Context) *pictureBelongsToMemory {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a pictureBelongsToMemory) Session(session *gorm.Session) *pictureBelongsToMemory {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a pictureBelongsToMemory) Model(m *model.Picture) *pictureBelongsToMemoryTx {
+	return &pictureBelongsToMemoryTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a pictureBelongsToMemory) Unscoped() *pictureBelongsToMemory {
+	a.db = a.db.Unscoped()
+	return &a
+}
+
+type pictureBelongsToMemoryTx struct{ tx *gorm.Association }
+
+func (a pictureBelongsToMemoryTx) Find() (result *model.Memory, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a pictureBelongsToMemoryTx) Append(values ...*model.Memory) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a pictureBelongsToMemoryTx) Replace(values ...*model.Memory) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a pictureBelongsToMemoryTx) Delete(values ...*model.Memory) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a pictureBelongsToMemoryTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a pictureBelongsToMemoryTx) Count() int64 {
+	return a.tx.Count()
+}
+
+func (a pictureBelongsToMemoryTx) Unscoped() *pictureBelongsToMemoryTx {
+	a.tx = a.tx.Unscoped()
+	return &a
 }
 
 type pictureDo struct{ gen.DO }
