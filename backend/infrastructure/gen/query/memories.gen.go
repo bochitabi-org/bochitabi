@@ -34,6 +34,17 @@ func newMemory(db *gorm.DB, opts ...gen.DOOption) memory {
 	_memory.Story = field.NewString(tableName, "story")
 	_memory.Latitude = field.NewString(tableName, "latitude")
 	_memory.Longitude = field.NewString(tableName, "longitude")
+	_memory.Record = memoryBelongsToRecord{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Record", "model.Record"),
+	}
+
+	_memory.Pictures = memoryHasManyPictures{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Pictures", "model.Picture"),
+	}
 
 	_memory.fillFieldMap()
 
@@ -50,6 +61,9 @@ type memory struct {
 	Story     field.String
 	Latitude  field.String
 	Longitude field.String
+	Record    memoryBelongsToRecord
+
+	Pictures memoryHasManyPictures
 
 	fieldMap map[string]field.Expr
 }
@@ -88,23 +102,192 @@ func (m *memory) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (m *memory) fillFieldMap() {
-	m.fieldMap = make(map[string]field.Expr, 6)
+	m.fieldMap = make(map[string]field.Expr, 8)
 	m.fieldMap["id"] = m.ID
 	m.fieldMap["record_id"] = m.RecordID
 	m.fieldMap["name"] = m.Name
 	m.fieldMap["story"] = m.Story
 	m.fieldMap["latitude"] = m.Latitude
 	m.fieldMap["longitude"] = m.Longitude
+
 }
 
 func (m memory) clone(db *gorm.DB) memory {
 	m.memoryDo.ReplaceConnPool(db.Statement.ConnPool)
+	m.Record.db = db.Session(&gorm.Session{Initialized: true})
+	m.Record.db.Statement.ConnPool = db.Statement.ConnPool
+	m.Pictures.db = db.Session(&gorm.Session{Initialized: true})
+	m.Pictures.db.Statement.ConnPool = db.Statement.ConnPool
 	return m
 }
 
 func (m memory) replaceDB(db *gorm.DB) memory {
 	m.memoryDo.ReplaceDB(db)
+	m.Record.db = db.Session(&gorm.Session{})
+	m.Pictures.db = db.Session(&gorm.Session{})
 	return m
+}
+
+type memoryBelongsToRecord struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a memoryBelongsToRecord) Where(conds ...field.Expr) *memoryBelongsToRecord {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a memoryBelongsToRecord) WithContext(ctx context.Context) *memoryBelongsToRecord {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a memoryBelongsToRecord) Session(session *gorm.Session) *memoryBelongsToRecord {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a memoryBelongsToRecord) Model(m *model.Memory) *memoryBelongsToRecordTx {
+	return &memoryBelongsToRecordTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a memoryBelongsToRecord) Unscoped() *memoryBelongsToRecord {
+	a.db = a.db.Unscoped()
+	return &a
+}
+
+type memoryBelongsToRecordTx struct{ tx *gorm.Association }
+
+func (a memoryBelongsToRecordTx) Find() (result *model.Record, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a memoryBelongsToRecordTx) Append(values ...*model.Record) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a memoryBelongsToRecordTx) Replace(values ...*model.Record) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a memoryBelongsToRecordTx) Delete(values ...*model.Record) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a memoryBelongsToRecordTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a memoryBelongsToRecordTx) Count() int64 {
+	return a.tx.Count()
+}
+
+func (a memoryBelongsToRecordTx) Unscoped() *memoryBelongsToRecordTx {
+	a.tx = a.tx.Unscoped()
+	return &a
+}
+
+type memoryHasManyPictures struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a memoryHasManyPictures) Where(conds ...field.Expr) *memoryHasManyPictures {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a memoryHasManyPictures) WithContext(ctx context.Context) *memoryHasManyPictures {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a memoryHasManyPictures) Session(session *gorm.Session) *memoryHasManyPictures {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a memoryHasManyPictures) Model(m *model.Memory) *memoryHasManyPicturesTx {
+	return &memoryHasManyPicturesTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a memoryHasManyPictures) Unscoped() *memoryHasManyPictures {
+	a.db = a.db.Unscoped()
+	return &a
+}
+
+type memoryHasManyPicturesTx struct{ tx *gorm.Association }
+
+func (a memoryHasManyPicturesTx) Find() (result []*model.Picture, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a memoryHasManyPicturesTx) Append(values ...*model.Picture) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a memoryHasManyPicturesTx) Replace(values ...*model.Picture) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a memoryHasManyPicturesTx) Delete(values ...*model.Picture) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a memoryHasManyPicturesTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a memoryHasManyPicturesTx) Count() int64 {
+	return a.tx.Count()
+}
+
+func (a memoryHasManyPicturesTx) Unscoped() *memoryHasManyPicturesTx {
+	a.tx = a.tx.Unscoped()
+	return &a
 }
 
 type memoryDo struct{ gen.DO }

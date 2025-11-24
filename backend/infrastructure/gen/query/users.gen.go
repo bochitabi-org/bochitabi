@@ -31,6 +31,11 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.ID = field.NewString(tableName, "id")
 	_user.Name = field.NewString(tableName, "name")
 	_user.MailAddress = field.NewString(tableName, "mail_address")
+	_user.Records = userHasManyRecords{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Records", "model.Record"),
+	}
 
 	_user.fillFieldMap()
 
@@ -44,6 +49,7 @@ type user struct {
 	ID          field.String
 	Name        field.String
 	MailAddress field.String
+	Records     userHasManyRecords
 
 	fieldMap map[string]field.Expr
 }
@@ -79,20 +85,105 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 3)
+	u.fieldMap = make(map[string]field.Expr, 4)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["name"] = u.Name
 	u.fieldMap["mail_address"] = u.MailAddress
+
 }
 
 func (u user) clone(db *gorm.DB) user {
 	u.userDo.ReplaceConnPool(db.Statement.ConnPool)
+	u.Records.db = db.Session(&gorm.Session{Initialized: true})
+	u.Records.db.Statement.ConnPool = db.Statement.ConnPool
 	return u
 }
 
 func (u user) replaceDB(db *gorm.DB) user {
 	u.userDo.ReplaceDB(db)
+	u.Records.db = db.Session(&gorm.Session{})
 	return u
+}
+
+type userHasManyRecords struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a userHasManyRecords) Where(conds ...field.Expr) *userHasManyRecords {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a userHasManyRecords) WithContext(ctx context.Context) *userHasManyRecords {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a userHasManyRecords) Session(session *gorm.Session) *userHasManyRecords {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a userHasManyRecords) Model(m *model.User) *userHasManyRecordsTx {
+	return &userHasManyRecordsTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a userHasManyRecords) Unscoped() *userHasManyRecords {
+	a.db = a.db.Unscoped()
+	return &a
+}
+
+type userHasManyRecordsTx struct{ tx *gorm.Association }
+
+func (a userHasManyRecordsTx) Find() (result []*model.Record, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a userHasManyRecordsTx) Append(values ...*model.Record) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a userHasManyRecordsTx) Replace(values ...*model.Record) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a userHasManyRecordsTx) Delete(values ...*model.Record) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a userHasManyRecordsTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a userHasManyRecordsTx) Count() int64 {
+	return a.tx.Count()
+}
+
+func (a userHasManyRecordsTx) Unscoped() *userHasManyRecordsTx {
+	a.tx = a.tx.Unscoped()
+	return &a
 }
 
 type userDo struct{ gen.DO }

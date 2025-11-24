@@ -16,6 +16,8 @@ type Record struct {
 	UserID     string    `gorm:"column:user_id;not null" json:"user_id"`
 	TripName   string    `gorm:"column:trip_name;not null" json:"trip_name"`
 	RecordDate time.Time `gorm:"column:record_date;not null" json:"record_date"`
+	User       User      `json:"user"`
+	Memories   []Memory  `json:"memories"`
 }
 
 // TableName Record's table name
