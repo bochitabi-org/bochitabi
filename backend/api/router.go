@@ -13,6 +13,19 @@ func RegisterRoute(c *gin.Engine){
 	memories.GET("", getMemories)
 }
 
+type Response struct {
+	Memories []Memory `json:"memories"`
+}
+
+type Memory struct {
+	ID string `json:"id"`
+	Name string `json:"name"`
+	Story string `json:"story"` 
+	Latitude string `json:"latitude"`
+	Longitude string `json:"longitude"`
+	Pictures []string `json:"pictures"`
+}
+
 // TODO: レイヤーリングする
 func getMemories(c *gin.Context) {
   dsn := "host=localhost user=app password=password dbname=bochitabi port=5432 sslmode=disable search_path=bochitabi"
@@ -21,23 +34,23 @@ func getMemories(c *gin.Context) {
 	query.SetDefault(db)
 
 	m := query.Memory
-	memories, _ := m.WithContext(c.Request.Context()).Preload(m.Pictures).Find()
+	ms, _ := m.WithContext(c.Request.Context()).Preload(m.Pictures).Find()
 
-	responseJson := make([]gin.H, len(memories))
-	for i, memory := range memories {
+	memories := make([]Memory, len(ms))
+	for i, memory := range ms {
 		pictures := make([]string, len(memory.Pictures))
-		for _, picture := range(memory.Pictures) {
-			pictures[i] = picture.URL
+		for j, picture := range(memory.Pictures) {
+			pictures[j] = picture.URL
 		}
-		responseJson[i] = gin.H{
-			"id": memory.ID,
-			"name": memory.Name,
-			"story": memory.Story,
-			"latitude": memory.Latitude,
-			"longitude": memory.Longitude,
-			"pictures": pictures,
+		memories[i] = Memory{
+			ID: memory.ID,
+			Name: memory.Name,
+			Story: memory.Story,
+			Latitude: memory.Latitude,
+			Longitude: memory.Longitude,
+			Pictures: pictures,
 		} 
 	}
 
-	c.JSON(200, gin.H{"memories": responseJson})
+	c.JSON(200, Response{memories})
 }
