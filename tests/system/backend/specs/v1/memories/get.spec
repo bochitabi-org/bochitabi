@@ -9,5 +9,10 @@ tags: wip
 * レスポンスのJsonBodyの".memories[0].story"が文字列の"昔々あるところに"である
 * レスポンスのJsonBodyの".memories[0].latitude"が文字列の"36.33018692714169"である
 * レスポンスのJsonBodyの".memories[0].longitude"が文字列の"140.09567236901313"である
-* レスポンスのJsonBodyの".memories[0].pictures[0]"が文字列の"https://picsum.photos/id/1"である
-* レスポンスのJsonBodyの".memories[0].pictures[1]"が文字列の"https://picsum.photos/id/13"である
+* レスポンスのJsonBodyの".memories[0].pictures.length"が文字列の"2"である
+* レスポンスのJsonBodyの".memories[1].id"が文字列の"0a22f567-fe0f-41d6-94c4-cf842d79b1b0"である
+* レスポンスのJsonBodyの".memories[1].name"が文字列の"記憶"である
+* レスポンスのJsonBodyの".memories[1].story"が文字列の"あの日あの時あの場所で"である
+* レスポンスのJsonBodyの".memories[1].latitude"が文字列の"36.33018692714170"である
+* レスポンスのJsonBodyの".memories[1].longitude"が文字列の"140.09567236901315"である
+* レスポンスのJsonBodyの".memories[1].pictures.length"が文字列の"1"である

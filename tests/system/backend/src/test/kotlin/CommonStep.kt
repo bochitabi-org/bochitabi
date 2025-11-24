@@ -59,8 +59,12 @@ class CommonStep {
                     if (value.has(it)) value.get(it) else return null
                 }
                 is JSONArray -> {
-                    val index = it.toIntOrNull() ?: return null
-                    if (index in 0 until value.length()) value.get(index) else return null
+                    if( it == "length") {
+                        value.length().toString()
+                    } else {
+                        val index = it.toIntOrNull() ?: return null
+                        if (index in 0 until value.length()) value.get(index) else return null
+                    }
                 }
                 else -> return null
             }
