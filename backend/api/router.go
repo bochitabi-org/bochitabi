@@ -13,6 +13,7 @@ func RegisterRoute(c *gin.Engine){
 	memories.GET("", getMemories)
 }
 
+// TODO: レイヤーリングする
 func getMemories(c *gin.Context) {
   dsn := "host=localhost user=app password=password dbname=bochitabi port=5432 sslmode=disable search_path=bochitabi"
 	db, _ := gorm.Open(postgres.Open(dsn))
@@ -20,25 +21,23 @@ func getMemories(c *gin.Context) {
 	query.SetDefault(db)
 
 	m := query.Memory
-	p := query.Picture
-	memories, _ := m.WithContext(c.Request.Context()).Find()
-	println(memories)
+	memories, _ := m.WithContext(c.Request.Context()).Preload(m.Pictures).Find()
 
 	responseJson := make([]gin.H, len(memories))
 	for i, memory := range memories {
-		pictures, _ := p.WithContext(c.Request.Context()).Where(p.MemoryID.Eq(memory.ID)).Find()
-		picturesJson := make([]string, len(pictures))
-		for j, picture := range pictures {
-			picturesJson[j] = picture.URL
-		}	
+		pictures := make([]string, len(memory.Pictures))
+		for _, picture := range(memory.Pictures) {
+			pictures[i] = picture.URL
+		}
 		responseJson[i] = gin.H{
 			"id": memory.ID,
 			"name": memory.Name,
 			"story": memory.Story,
 			"latitude": memory.Latitude,
 			"longitude": memory.Longitude,
-			"pictures": picturesJson,
+			"pictures": pictures,
 		} 
 	}
+
 	c.JSON(200, gin.H{"memories": responseJson})
 }
