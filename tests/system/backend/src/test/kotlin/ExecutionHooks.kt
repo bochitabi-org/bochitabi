@@ -18,10 +18,10 @@ class ExecutionHooks {
     @BeforeSpec
     fun setupDb(context: ExecutionContext) {
         val fixturesDir = context.currentSpecification.fileName
-            .removePrefix(System.getProperty("user.dir") + "/specs")
+            .removePrefix(System.getProperty("user.dir") + "/specs/")
             .removeSuffix(".spec")
 
-        val datasetDir = "fixtures$fixturesDir/db"
+        val datasetDir = "$fixturesDir/db/"
 
         Thread.currentThread().contextClassLoader.getResource(datasetDir)
             ?.let { CsvURLDataSet(it) }
