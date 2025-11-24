@@ -1,0 +1,44 @@
+package api
+
+import (
+	"github.com/bochitabi-org/bochitabi/backend/infrastructure/gen/query"
+	"github.com/gin-gonic/gin"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
+
+func RegisterRoute(c *gin.Engine){
+	memories := c.Group("v1/memories")
+
+	memories.GET("", getMemories)
+}
+
+func getMemories(c *gin.Context) {
+  dsn := "host=localhost user=app password=password dbname=bochitabi port=5432 sslmode=disable search_path=bochitabi"
+	db, _ := gorm.Open(postgres.Open(dsn))
+
+	query.SetDefault(db)
+
+	m := query.Memory
+	p := query.Picture
+	memories, _ := m.WithContext(c.Request.Context()).Find()
+	println(memories)
+
+	responseJson := make([]gin.H, len(memories))
+	for i, memory := range memories {
+		pictures, _ := p.WithContext(c.Request.Context()).Where(p.MemoryID.Eq(memory.ID)).Find()
+		picturesJson := make([]string, len(pictures))
+		for j, picture := range pictures {
+			picturesJson[j] = picture.URL
+		}	
+		responseJson[i] = gin.H{
+			"id": memory.ID,
+			"name": memory.Name,
+			"story": memory.Story,
+			"latitude": memory.Latitude,
+			"longitude": memory.Longitude,
+			"pictures": picturesJson,
+		} 
+	}
+	c.JSON(200, gin.H{"memories": responseJson})
+}
