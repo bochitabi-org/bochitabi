@@ -1,6 +1,6 @@
 package model
 
 type Picture struct {
-	ID string
+	ID  string
 	url string
 }
