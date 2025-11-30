@@ -6,17 +6,17 @@ import (
 	"gorm.io/gen/field"
 	"gorm.io/gorm"
 
-	"github.com/bochitabi-org/bochitabi/backend/infrastructure/gen/model"
+	"github.com/bochitabi-org/bochitabi/backend/internal/infrastructure/db/gen/model"
 )
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
 		OutPath: "infrastructure/gen/query",
-		Mode: gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
+		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
 	})
 
 	dsn := "host=localhost user=app password=password dbname=bochitabi port=5432 sslmode=disable search_path=bochitabi"
-  db, _ := gorm.Open(postgres.Open(dsn),&gorm.Config{})
+	db, _ := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	g.UseDB(db)
 

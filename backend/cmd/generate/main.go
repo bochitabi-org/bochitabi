@@ -7,20 +7,20 @@ import (
 )
 
 func main() {
-  g := gen.NewGenerator(gen.Config{
-    OutPath: "infrastructure/gen/query",
-    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface,
-  })
+	g := gen.NewGenerator(gen.Config{
+		OutPath: "infrastructure/gen/query",
+		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
+	})
 
-  dsn := "host=localhost user=app password=password dbname=bochitabi port=5432 sslmode=disable search_path=bochitabi"
-  db, _ := gorm.Open(postgres.Open(dsn),&gorm.Config{})
-  
-  g.UseDB(db)
+	dsn := "host=localhost user=app password=password dbname=bochitabi port=5432 sslmode=disable search_path=bochitabi"
+	db, _ := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
-  all := g.GenerateAllTable()
+	g.UseDB(db)
 
-  g.ApplyBasic(all...)
+	all := g.GenerateAllTable()
 
-  g.Execute()
+	g.ApplyBasic(all...)
+
+	g.Execute()
 
 }

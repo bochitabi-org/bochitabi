@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/bochitabi-org/bochitabi/backend/infrastructure/gen/model"
+	"github.com/bochitabi-org/bochitabi/backend/internal/infrastructure/db/gen/model"
 )
 
 func newMemory(db *gorm.DB, opts ...gen.DOOption) memory {

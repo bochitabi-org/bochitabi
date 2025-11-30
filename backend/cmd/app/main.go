@@ -1,18 +1,21 @@
 package main
 
 import (
-	"github.com/bochitabi-org/bochitabi/backend/api"
-	"github.com/gin-gonic/gin"
+	"github.com/bochitabi-org/bochitabi/backend/internal/infrastructure/db/queryservice"
+	"github.com/bochitabi-org/bochitabi/backend/internal/presentation"
+	"github.com/bochitabi-org/bochitabi/backend/internal/presentation/handler"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func main() { 
-	router := gin.Default()
-  router.GET("/ping", func(c *gin.Context) {
-    c.JSON(200, gin.H{
-      "message": "pong",
-    })
-  })
+var dsn = "host=localhost user=app password=password dbname=bochitabi port=5432 sslmode=disable search_path=bochitabi"
 
-  api.RegisterRoute(router)
-  router.Run()
+func main() {
+	db, _ := gorm.Open(postgres.Open(dsn))
+	getMemoriesQuery := queryservice.NewGetMemoriesQueryService(db)
+	memoryHandler := handler.NewMemoryHandler(getMemoriesQuery)
+	router := presentation.NewRouter(memoryHandler)
+	engine := router.Init()
+
+	engine.Run()
 }
