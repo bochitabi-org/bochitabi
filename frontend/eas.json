@@ -1,17 +1,27 @@
 {
-  "cli": {
-    "version": ">= 16.19.3",
-    "appVersionSource": "remote"
-  },
-  "build": {
-    "preview": {
-      "distribution": "internal"
-    },
-    "production": {
-      "autoIncrement": true
-    }
-  },
-  "submit": {
-    "production": {}
-  }
+	"cli": {
+		"version": ">= 16.19.3",
+		"appVersionSource": "remote"
+	},
+	"build": {
+		"development": {
+			"env": {
+				"EXPO_PUBLIC_API_HOST": "localhost",
+				"IOS_GOOGLE_MAPS_API_KEY": "AIzaSyA4A3uyJVvC_McdfMnOwLwczr9sN4ky3PY",
+				"ANDROID_GOOGLE_MAPS_API_KEY": "AIzaSyB3L6FfkHQ5GB4-3LrhBZB9cIo3xemDSpg"
+			},
+			"android": {
+				"buildType": "apk"
+			}
+		},
+		"preview": {
+			"distribution": "internal"
+		},
+		"production": {
+			"autoIncrement": true
+		}
+	},
+	"submit": {
+		"production": {}
+	}
 }
