@@ -1,11 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { Sheet } from "tamagui";
 import { Memory } from "./Memory";
+import { useFetchMemories } from "../hooks/useFetchMemories";
 
-const host = process.env.EXPO_PUBLIC_API_HOST;
 
 const { width, height } = Dimensions.get("window");
 
@@ -21,12 +20,6 @@ const styles = StyleSheet.create({
 	},
 });
 
-async function fetchMemories(): Promise<Response> {
-	const response = await fetch(`http://${host}:8080/v1/memories`);
-	const json = await response.json();
-	return json;
-}
-
 // 櫻川市
 const defaultRegion = {
 	latitude: 36.33018692714167,
@@ -35,21 +28,10 @@ const defaultRegion = {
 	longitudeDelta: 0.05,
 };
 
-type Response = {
-	memories: {
-		id: string;
-		name: string;
-		story: string;
-		latitude: string;
-		longitude: string;
-		pictures: string[];
-	}[];
-};
 
 export function MemoryMap() {
 	const [selectedMarker, setSelectedMarker] = useState(false);
-	const query = useQuery({ queryKey: ["memories"], queryFn: fetchMemories });
-	const { data, isPending, error } = query;
+	const {data, isPending, error} = useFetchMemories();
 
 	if (isPending) {
 		return (
