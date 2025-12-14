@@ -5,10 +5,21 @@
 	},
 	"build": {
 		"development": {
+			"distribution": "internal"	
+		},
+		"dev-ios": {
+			"extends": "development",
 			"env": {
-				"EXPO_PUBLIC_API_HOST": "localhost",
-				"IOS_GOOGLE_MAPS_API_KEY": "AIzaSyA4A3uyJVvC_McdfMnOwLwczr9sN4ky3PY",
-				"ANDROID_GOOGLE_MAPS_API_KEY": "AIzaSyB3L6FfkHQ5GB4-3LrhBZB9cIo3xemDSpg"
+				"EXPO_PUBLIC_API_HOST": "localhost"
+			},
+			"ios": {
+				"simulator": true
+			}
+		},
+		"dev-android": {
+			"extends": "development",
+			"env": {
+				"EXPO_PUBLIC_API_HOST": "10.0.2.2"
 			},
 			"android": {
 				"buildType": "apk"
