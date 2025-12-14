@@ -1,6 +1,6 @@
 package getmemories
 
-type GetMemoriesQueryResult struct {
+type GetMemoriesResult struct {
 	Memories []Memory `json:"memories"`
 }
 
