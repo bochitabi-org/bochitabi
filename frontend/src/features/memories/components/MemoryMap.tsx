@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { Sheet } from "tamagui";
 import { Memory } from "./Memory";
+import { useFetchMemories } from "../hooks/useFetchMemories";
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -10,7 +12,7 @@ const styles = StyleSheet.create({
 	container: {
 		height,
 		width,
-		justifyContent: "flex-end",
+		justifyContent: "center",
 		alignItems: "center",
 	},
 	map: {
@@ -26,56 +28,22 @@ const defaultRegion = {
 	longitudeDelta: 0.05,
 };
 
-const defaultMarkers = [
-	{
-		id: "1",
-		coordinate: {
-			latitude: 36.33018692714167,
-			longitude: 140.09567236901313,
-		},
-		title: "最初の思い出",
-		description: "あの日あの時の思い出",
-	},
-	{
-		id: "2",
-		coordinate: {
-			latitude: 36.348587,
-			longitude: 140.113972,
-		},
-		title: "近くの思い出1",
-		description: "櫻川市から2キロ先での思い出",
-	},
-	{
-		id: "3",
-		coordinate: {
-			latitude: 36.311787,
-			longitude: 140.077172,
-		},
-		title: "近くの思い出2",
-		description: "櫻川市から2キロ先での思い出",
-	},
-	{
-		id: "4",
-		coordinate: {
-			latitude: 36.348387,
-			longitude: 140.077372,
-		},
-		title: "近くの思い出3",
-		description: "櫻川市から2キロ先での思い出",
-	},
-	{
-		id: "5",
-		coordinate: {
-			latitude: 36.311987,
-			longitude: 140.114172,
-		},
-		title: "近くの思い出4",
-		description: "櫻川市から2キロ先での思い出",
-	},
-];
 
 export function MemoryMap() {
 	const [selectedMarker, setSelectedMarker] = useState(false);
+	const {data, isPending, error} = useFetchMemories();
+
+	if (isPending) {
+		return (
+			<View style={styles.container}>
+				<Text>Loading...</Text>
+			</View>
+		);
+	}
+
+	if (error) {
+		throw new Error("fetch error");
+	}
 
 	return (
 		<View style={styles.container}>
@@ -84,12 +52,15 @@ export function MemoryMap() {
 				style={styles.map}
 				region={defaultRegion}
 			>
-				{defaultMarkers.map((marker) => (
+				{data?.memories?.map((memory) => (
 					<Marker
-						key={marker.id}
-						coordinate={marker.coordinate}
-						title={marker.title}
-						description={marker.description}
+						key={memory.id}
+						coordinate={{
+							latitude: Number(memory.latitude),
+							longitude: Number(memory.longitude),
+						}}
+						title={memory.name}
+						description={memory.story}
 						onPress={() => setSelectedMarker((prev) => !prev)}
 					/>
 				))}

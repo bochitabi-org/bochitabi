@@ -18,6 +18,7 @@ func NewRouter(memoryHandler *handler.MemoryHandler) *Router {
 func (r *Router) Init() *gin.Engine {
 	engine := gin.Default()
 
+	engine.GET("/ping", handler.PingHandler)
 	engine.GET("/v1/memories", r.memoryHandler.GetMemories)
 
 	return engine
