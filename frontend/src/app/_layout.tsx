@@ -1,40 +1,27 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { Tabs } from "expo-router";
-import { QueryClientProvider } from "../features/providers/QueryClientProvider";
+import { Stack } from "expo-router";
+import { MemoriesProvider } from "../features/memories/context/MemoriesProvider";
 import { UiProvider } from "../features/providers/UiProvider";
 
 export default function Layout() {
 	return (
-		<QueryClientProvider>
-			<UiProvider>
-				<Tabs>
-					<Tabs.Screen
-						name="index"
+		<UiProvider>
+			<MemoriesProvider>
+				<Stack>
+					<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+					<Stack.Screen
+						name="post"
 						options={{
-							title: "Home",
-							headerShown: false,
-							tabBarIcon: ({ color }) => (
-								<FontAwesome name="home" size={28} color={color} />
-							),
+							title: "思い出を投稿する",
 						}}
 					/>
-					<Tabs.Screen
-						name="account"
+					<Stack.Screen
+						name="search"
 						options={{
-							title: "Account",
-							headerShown: false,
-							tabBarIcon: ({ color }) => (
-								<MaterialCommunityIcons
-									name="account-circle-outline"
-									size={28}
-									color={color}
-								/>
-							),
+							title: "思い出を検索する",
 						}}
 					/>
-				</Tabs>
-			</UiProvider>
-		</QueryClientProvider>
+				</Stack>
+			</MemoriesProvider>
+		</UiProvider>
 	);
 }
