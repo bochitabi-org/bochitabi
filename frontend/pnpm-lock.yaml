@@ -25,10 +25,10 @@ importers:
         version: 54.0.26(@babel/core@7.28.5)(@expo/metro-runtime@6.1.2)(expo-router@6.0.16)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.1))(react@19.1.1)
       expo-constants:
         specifier: ~18.0.9
-        version: 18.0.10(expo@54.0.26)(react-native@0.82.1(@babel/core@7.28.4)(@types/react@19.1.17)(react@19.1.1))
+        version: 18.0.10(expo@54.0.26)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.1))
       expo-image-picker:
         specifier: ^17.0.9
-        version: 17.0.9(expo@54.0.9)
+        version: 17.0.9(expo@54.0.26)
       expo-linking:
         specifier: ~8.0.8
         version: 8.0.9(expo@54.0.26)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.1))(react@19.1.1)
@@ -7019,16 +7019,16 @@ snapshots:
       react: 19.1.1
       react-native: 0.82.1(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.1)
 
-  expo-image-loader@6.0.0(expo@54.0.9):
+  expo-image-loader@6.0.0(expo@54.0.26):
     dependencies:
-      expo: 54.0.9(@babel/core@7.28.4)(@expo/metro-runtime@6.1.2)(expo-router@6.0.8)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0)
+      expo: 54.0.26(@babel/core@7.28.5)(@expo/metro-runtime@6.1.2)(expo-router@6.0.16)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.1))(react@19.1.1)
 
-  expo-image-picker@17.0.9(expo@54.0.9):
+  expo-image-picker@17.0.9(expo@54.0.26):
     dependencies:
-      expo: 54.0.9(@babel/core@7.28.4)(@expo/metro-runtime@6.1.2)(expo-router@6.0.8)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0)
-      expo-image-loader: 6.0.0(expo@54.0.9)
+      expo: 54.0.26(@babel/core@7.28.5)(@expo/metro-runtime@6.1.2)(expo-router@6.0.16)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.1))(react@19.1.1)
+      expo-image-loader: 6.0.0(expo@54.0.26)
 
-  expo-keep-awake@15.0.7(expo@54.0.9)(react@19.1.0):
+  expo-keep-awake@15.0.7(expo@54.0.26)(react@19.1.1):
     dependencies:
       expo: 54.0.26(@babel/core@7.28.5)(@expo/metro-runtime@6.1.2)(expo-router@6.0.16)(react-native@0.82.1(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.1))(react@19.1.1)
       react: 19.1.1
